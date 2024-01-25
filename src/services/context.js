@@ -3,7 +3,12 @@ import React, { createContext, useState } from "react";
 const dataContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [notes, setNotes] = useState([]);
+  const data = [
+    { title: "Title 1", text: "Lorem Ipsum" },
+    { title: "Title 2", text: "Lorem Ipsum 2" },
+  ];
+
+  const [notes, setNotes] = useState(data);
 
   return (
     <dataContext.Provider value={{ notes, setNotes }}>

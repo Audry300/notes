@@ -1,19 +1,12 @@
-import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { TouchableOpacity, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export const AddButton = ({ onPress }) => {
   return (
     <SafeAreaView>
-      <TouchableWithoutFeedback onPress={onPress}>
-        <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
-      </TouchableWithoutFeedback>
+      <TouchableOpacity style={styles.addButton} onPress={onPress}>
+        <Text style={styles.addButtonText}>+</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

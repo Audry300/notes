@@ -1,16 +1,16 @@
+import React, { useContext } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 import { Card } from "../components/Card";
 import { AddButton } from "../components/addButton";
+import dataContext from "../services/context";
 
 export default HomeScreen = ({ navigation }) => {
-  const data = [
-    { title: "Title 1", text: "Lorem Ipsum" },
-    { title: "Title 2", text: "Lorem Ipsum 2" },
-  ];
+  const { notes } = useContext(dataContext);
+
   return (
     <SafeAreaView>
       <ScrollView>
-        {data.map((item, index) => (
+        {notes.map((item, index) => (
           <Card
             key={index}
             title={item.title}
