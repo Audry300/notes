@@ -24,6 +24,7 @@ export const updateData = async (key, value) => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.mergeItem(key, jsonValue);
+    console.log("Updated note: ", key);
   } catch (e) {
     console.error("Error while trying to update the data", e);
   }
@@ -52,6 +53,7 @@ export const getAllKeys = async () => {
 export const clearAsyncStorage = async () => {
   try {
     await AsyncStorage.clear();
+
     console.log("AsyncStorage cleared successfully!");
   } catch (error) {
     console.error("Error clearing AsyncStorage:", error);

@@ -37,13 +37,18 @@ export default CardScreen = ({ route }) => {
         ) {
           setNotes([...notes, { key, ...note }]);
         } else if (title !== note.title || text !== note.text) {
-          console.log("Executing the second condition");
           // Check if the user has made changes to the notes by verifying if the routes params differ from the component variables
           setNotes((prevNotes) =>
             prevNotes.map((oldNote) =>
               // Looking thru the notes array to find the note to update
               oldNote.title === title && oldNote.text === text
-                ? { ...oldNote, title: note.title, text: note.text } // Update the title and text
+                ? {
+                    ...oldNote,
+                    title: note.title,
+                    text: note.text,
+                    key,
+                    change: "!",
+                  } // Update the title and text
                 : oldNote
             )
           );

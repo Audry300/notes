@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 
-import { saveData, readData, getAllKeys } from "./asyncStorage";
+import { updateData, saveData, readData, getAllKeys } from "./asyncStorage";
 
 const dataContext = createContext();
 
@@ -26,6 +26,7 @@ export const ContextProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const keys = await getAllKeys();
+        console.log;
         setKeys(keys);
 
         const data = await Promise.all(keys.map((key) => readData(key)));
@@ -34,18 +35,29 @@ export const ContextProvider = ({ children }) => {
         console.error("Error fetching data", e);
       }
     };
-    initializeData();
+    //initializeData();
     fetchData();
   }, []);
 
   useEffect(() => {
     const updateStore = async () => {
       if (keys.length !== notes.length) {
-        // this means that a new note has been added
+        // this means that a new note has been added, it will be the last one from the data context array
+        console.log(keys.length, notes.length);
         const { key, title, text } = notes[notes.length - 1];
         await saveData(key, { title, text });
+        setKeys([...keys, key]);
       } else {
         // There has just been an update on a note
+
+        const NoteToUpdate = notes.filter((note) => note.change !== undefined);
+
+        if (NoteToUpdate[0]) {
+          //if true, this is not the first render, which would result in an error
+          const { key, title, text } = NoteToUpdate[0];
+          console.log(NoteToUpdate);
+          await updateData(key, { title, text });
+        }
       }
     };
 
