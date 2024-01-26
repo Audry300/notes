@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { SafeAreaView, TextInput } from "react-native";
-import dataContext from "../services/context";
 import { useNavigation } from "@react-navigation/native";
+import dataContext from "../services/context";
 
 export default CardScreen = ({ route }) => {
   const { title, text } = route.params.data;
-
+  const date = new Date();
+  const key = date.toISOString(); // this will be used as a key to store the note in the async storage
   const [note, setNote] = useState({
     title,
     text,
@@ -14,6 +15,7 @@ export default CardScreen = ({ route }) => {
   const { notes, setNotes } = useContext(dataContext);
 
   const navigation = useNavigation();
+
   useEffect(() => {
     setNote({
       title,
@@ -22,16 +24,18 @@ export default CardScreen = ({ route }) => {
   }, [title, text]);
 
   useEffect(() => {
+    // Save the changes before the user leaves the card screen
     const saveBeforeMovingBacktoHome = navigation.addListener(
       "beforeRemove",
       () => {
         if (
+          // this condition will be true if the note is new, so we have to use a new key to save it
           title == "" &&
           text == "" &&
           note.title !== "" &&
           note.text !== ""
         ) {
-          setNotes([...notes, note]);
+          setNotes([...notes, { key, ...note }]);
         } else if (title !== note.title || text !== note.text) {
           console.log("Executing the second condition");
           // Check if the user has made changes to the notes by verifying if the routes params differ from the component variables
@@ -39,7 +43,7 @@ export default CardScreen = ({ route }) => {
             prevNotes.map((oldNote) =>
               // Looking thru the notes array to find the note to update
               oldNote.title === title && oldNote.text === text
-                ? { title: note.title, text: note.text } // Update the title and text
+                ? { ...oldNote, title: note.title, text: note.text } // Update the title and text
                 : oldNote
             )
           );
@@ -50,7 +54,7 @@ export default CardScreen = ({ route }) => {
     return () => {
       saveBeforeMovingBacktoHome();
     };
-  }, [navigation, note, setNotes]);
+  }, [navigation, note, setNotes, title, text]);
 
   const handleTitleChange = (newTitle) => {
     setNote((prevNote) => ({ ...prevNote, title: newTitle }));
