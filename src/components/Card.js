@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export const Card = ({ title, text, onPress }) => {
+export const Card = ({ title, text, onPress, onLongPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
       <View style={styles.card}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.content}>{text}</Text>

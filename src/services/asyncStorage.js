@@ -33,6 +33,7 @@ export const updateData = async (key, value) => {
 export const deledeData = async (key) => {
   try {
     await AsyncStorage.removeItem(key);
+    console.log("Note deleted successfully");
   } catch (e) {
     "Error while trying to delete the data", e;
   }

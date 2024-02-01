@@ -10,44 +10,34 @@ export const ContextProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    const initializeData = async () => {
-      const data = [
-        { title: "Title 1", text: "Lorem Ipsum" },
-        { title: "Title 2", text: "Lorem Ipsum 2" },
-      ];
-      try {
-        await saveData("key-1", data[0]);
-        await saveData("key-2", data[1]);
-      } catch (e) {
-        console.error("error while initializing the data", e);
-      }
-    };
-
     const fetchData = async () => {
       try {
         const keys = await getAllKeys();
-        console.log;
         setKeys(keys);
 
-        const data = await Promise.all(keys.map((key) => readData(key)));
+        const dataPromises = keys.map(async (key) => {
+          const data = await readData(key);
+          return { key, ...data };
+        });
+
+        const data = await Promise.all(dataPromises);
         setNotes(data);
       } catch (e) {
         console.error("Error fetching data", e);
       }
     };
-    //initializeData();
     fetchData();
   }, []);
 
   useEffect(() => {
     const updateStore = async () => {
-      if (keys.length !== notes.length) {
+      if (keys.length < notes.length) {
         // this means that a new note has been added, it will be the last one from the data context array
-        console.log(keys.length, notes.length);
+
         const { key, title, text } = notes[notes.length - 1];
-        await saveData(key, { title, text });
+        await saveData(key, { key, title, text });
         setKeys([...keys, key]);
-      } else {
+      } else if (keys.length === notes.length) {
         // There has just been an update on a note
 
         const NoteToUpdate = notes.filter((note) => note.change !== undefined);
@@ -55,8 +45,8 @@ export const ContextProvider = ({ children }) => {
         if (NoteToUpdate[0]) {
           //if true, this is not the first render, which would result in an error
           const { key, title, text } = NoteToUpdate[0];
-          console.log(NoteToUpdate);
-          await updateData(key, { title, text });
+
+          await updateData(key, { key, title, text });
         }
       }
     };
@@ -65,7 +55,7 @@ export const ContextProvider = ({ children }) => {
   }, [notes]);
 
   return (
-    <dataContext.Provider value={{ notes, setNotes }}>
+    <dataContext.Provider value={{ notes, setNotes, keys, setKeys }}>
       {children}
     </dataContext.Provider>
   );
