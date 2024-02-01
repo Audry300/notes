@@ -26,7 +26,7 @@ Make sure you have [Node.js](https://nodejs.org/) and [Expo CLI](https://docs.ex
 
 1. Clone the repository:
 
-* git clone https://github.com/Audry300/notes.git
+* git clone [https://github.com/Audry300/notes.git](https://github.com/Audry300/notes.git)
 * cd notes
 
 2. Install dependencies
