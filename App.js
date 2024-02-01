@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ContextProvider } from "./src/services/context";
 import HomeScreen from "./src/screens/HomeScreen";
 import CardScreen from "./src/screens/CardScreen";
-import WarningScreen from "./src/screens/WarningScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,12 +14,12 @@ export default function App() {
           <Stack.Screen
             name="home"
             component={HomeScreen}
-            options={{ headerTitle: null }}
+            options={{ title: "" }}
           />
           <Stack.Screen
             name="cardView"
             component={CardScreen}
-            options={{ headerTitle: null }}
+            options={{ title: "" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

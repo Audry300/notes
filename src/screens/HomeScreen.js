@@ -17,7 +17,7 @@ export default HomeScreen = ({ navigation }) => {
   }, [note]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
         {notes.map((item, index) => (
           <Card
